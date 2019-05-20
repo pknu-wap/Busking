@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/main.css">
+    <!--/를 붙이니깐 다른 페이지에서 불러와도 적용됨-->
+</head>
+
+<body>
+    <% 
+        var youtube_list_num = 0;
+        var live_video_num = 0;
+        var my_page_info = my_page_info;
+        var youtube_popularity_num = 0
+    %>
+    <div id="all">
+        <!--전체-->
+        <div id="top">
+            <!--top-->
+            <img src="">
+            <form action="/search_process" method="GET" id="search">
+                <!--수평-->
+                <input type="text" name="" id="searchinput">
+                <input type="submit" value="검색" id="searchbutton">
+            </form>
+        </div>
+        <div id="mid">
+            <!--중간-->
+            <div id="midleft">
+                <!--left-->
+                <div>
+                    <%- login_form %>
+                    <a href="/signUp">회원가입</a><br>
+                    <a href="">forgot ID</a><br>
+                    <a href="">forgot password</a>
+                </div>
+                <div>
+                    <h6>인기 버스커 순위</h6>
+                    <ol>
+                        <li><a href="">------</a></li>
+                        <li><a href="">------</a></li>
+                        <li><a href="">------</a></li>
+                        <li><a href="">------</a></li>
+                    </ol>
+                </div>
+            </div>
+            <div id="midcenter">
+                <h3>MyPage</h3><input type="button" value="실시간 버스킹 광고보기" onclick="location.href='/'"><br>
+                <input type="button" value="새로만들기" onclick="location.href='/MyPage/create'">
+                <input type="button" value="수정하기" onclick="location.href='/MyPage/update'">
+                <input type="button" value="삭제하기" onclick="location.href='/MyPage/delete_process'">
+                <br>
+                <!--center-->
+                <% if(my_page_info[0] !== undefined){ %>
+                가수 : <%=my_page_info[0].singer %><br>
+                장르 : <%=my_page_info[0].genre%><br>
+                주요 활동 지역 : <%=my_page_info[0].location %><br>
+                소개글 : <%=my_page_info[0].introduce %><br>
+                <% } %>
+                유투브 동영상 :
+                <form action="/MyPage/youtube_add_process" method="post">
+                    <input type="text" name="youtube_link">
+                    <input type="submit" value="추가">
+                </form><br>
+                <% while(youtube_list_num < youtube_list.length){ 
+                    var url = youtube_list[youtube_list_num].youtube_link;
+                    var split = url.split('/');
+                    var youtube_link = split[3];
+                %>
+                <div>
+                    <iframe src="https://www.youtube.com/embed/<%=youtube_link%>" frameborder="0"
+                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+                    </iframe>
+                    <input type="button" value="삭제" onclick="location.href='/MyPage/youtube_delete_process/<%=youtube_list[youtube_list_num].video_num%>'">
+                    <input type="button" value="좋아요" onclick="location.href='/MyPage/youtube_like_process/<%=youtube_list[youtube_list_num].video_num%>'">
+                </div>
+                <%
+                        youtube_list_num++;
+                    }
+                %>
+            </div>
+            <div id="midright">
+                <!--right-->
+                <div>
+                    <h6>내 주변 버스킹 찾기</h6>
+                    <form action="" method="POST">
+                        <label for="distance">거리 조절</label>
+                        <select name="">
+                            <option>거리 선택</option>
+                            <option>100m</option>
+                            <option>300m</option>
+                            <option>500m</option>
+                            <option>1km</option>
+                        </select>
+                    </form>
+                </div>
+                <div>
+                    <h6>실시간 인기 유튜브 생방송</h6>
+                    <% while(live_video_num < live_video.length){
+                        var url = live_video[live_video_num].youtube_link
+                        var split = url.split('/');
+                        var youtube_link = split[3]; //유투브 실시간 방송 개인 링크번호
+                    %>
+                    <h6><%=live_video_num + 1 %>등</h6>
+                    <iframe width="150" height="100" src="https://www.youtube.com/embed/<%=youtube_link %>"
+                        frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen>
+                    </iframe>
+                    <% 
+                        live_video_num++;
+                    }
+                    %>
+                </div>
+            </div>
+        </div>
+        <div>
+            <!--아래-->
+            <h6>유투브 인기 동영상</h6>
+            <% while(youtube_popularity_num < youtube_popularity.length){
+                var url = youtube_popularity[youtube_popularity_num].youtube_link
+                console.log(url);
+                var split = url.split('/');
+                console.log(split);
+                var youtube_link = split[3]; //유투브 실시간 방송 개인 링크번호
+            %>
+            <span>
+                <%=youtube_popularity_num + 1 %>등
+                <iframe width="150" height="100" src="https://www.youtube.com/embed/<%=youtube_link %>" frameborder="0"
+                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+                </iframe>
+            </span>
+            <% 
+                youtube_popularity_num++;
+            }
+            %>
+        </div>
+    </div>
+</body>
+
+</html>

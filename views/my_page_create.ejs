@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body>
+    <form action="/MyPage/create_process" method="POST">
+        <input type="hidden" name="user_name" value='<%=user_name%>'>
+        가수 이름 : <input type="text" name="singer"><br>
+        소개글 : <textarea name="introduce" ></textarea><br>
+        장르 : <select name="genre" >
+                <option value="ballade">발라드</option>
+                <option value="hiphop">힙합 </option>
+                <option value="acoustic">어쿠스틱</option>
+            </select><br>
+        주요활동지역 : <input type="text" name="location">
+        <!-- 실시간 유투브 링크 : <input type="text" name="youtube_link"><br> -->
+        <input type="submit" value="등록">
+    </form>
+</body>
