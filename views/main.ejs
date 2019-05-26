@@ -31,9 +31,9 @@
         <div id="top">
             <!--top-->
             <img src="">
-            <form action="/login_process" method="GET" id="search">
+            <form action="/search" method="GET" id="search">
                 <!--수평-->
-                <input type="text" name="" id="searchinput">
+                <input type="text" name="searchId" id="searchinput">
                 <input type="submit" value="검색" id="searchbutton">
             </form>
         </div>
@@ -50,10 +50,10 @@
                 <div>
                     <h6>인기 버스커 순위</h6>
                     <ol>
-                        <li><a href="">------</a></li>
-                        <li><a href="">------</a></li>
-                        <li><a href="">------</a></li>
-                        <li><a href="">------</a></li>
+                        <%var i = 0;
+                        for(; i < ranking.length && i < 5; i++){%>
+                        <li><a href="/show_detail/<%=ranking[i].board_num%>"><%=ranking[i].singer%></a></li>
+                        <%}%>
                     </ol>
                 </div>
             </div>
@@ -209,10 +209,8 @@
             <!--아래-->
             <h6>유투브 인기 동영상</h6>
             <% while(youtube_list_num < youtube_list.length){
-                var url = youtube_list[youtube_list_num].youtube_link
-                console.log(url);
+                var url = youtube_list[youtube_list_num].youtube_link;
                 var split = url.split('/');
-                console.log(split);
                 var youtube_link = split[3]; //유투브 실시간 방송 개인 링크번호
             %>
             <span>

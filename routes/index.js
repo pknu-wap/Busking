@@ -48,7 +48,7 @@ router.get('/signUp', function (request, response) {
 
 router.post('/signUp_process', function (request, response) {
     var post = request.body;
-
+    
     db.query('INSERT INTO signUp VALUES (?, ?, ?, ?, ?, ?)',
         [post.id, post.password, post.name, post.birthday, post.sex, post.email], function (error, result) {
             if (error) {
@@ -58,9 +58,45 @@ router.post('/signUp_process', function (request, response) {
             }
         });
 });
+router.get('/search', (request, response)=>{
+    console.log(request.query);
+    
+    response.redirect(`/search/${request.query.searchId}`);
+})
+router.get('/search/:searchId', (request, response)=>{
+    var key = request.params.searchId;
+    var list = [];
+    db.query(`SELECT board_num FROM busking_info WHERE singer LIKE '%${key}%' OR song LIKE '%${key}%'`, (err, value)=>{
+        for(var i = 0; i < value.length; i++)
+            list.push(value[i].board_num);
+        list.sort((a, b)=>{ // 오름차순 정렬, 혹시나 있을지 모르는 중복의 제거를 위해
+            return a - b;
+        });
+         
+        var view = 'searchView';
+        var state = '';
+        for(var i = 0; i < list.length; i++){
+            if(i!=0 && list[i] === list[i-1])
+                continue;
+            if(i == 0)
+                state += list[i];
+            else
+                state += (' OR '+ list[i]);
+        }
+        
+        db.query(`DROP VIEW IF EXISTS ${view}`, (err2, tmp)=>{ // 검색할때마다 뷰 초기화
+            db.query(`CREATE VIEW ${view} AS SELECT * FROM busking_info WHERE board_num=${state}`, (err3, tmp2)=>{ // create view for search
+                var login_form = ``;
+                login_form = template.loginForm(request.session.is_logined, request.session.name);
 
+                template.Main(1, request, response, db, login_form, view);
+            });
+        });
+    });
+});
 router.post('/login_process', function (request, response) {
     var post = request.body;
+    
     db.query(`SELECT * FROM signUp`, function (error, login) {
         var count = 0;
 
@@ -109,10 +145,10 @@ var multer = require('multer'); // multer모듈 적용 (for 파일업로드)
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'public/images') // cb 콜백함수를 통해 전송된 파일 저장 디렉토리 설정
-    }//,
-    //   filename: function (req, file, cb) {
-    //     cb(null, file.originalname) // cb 콜백함수를 통해 전송된 파일 이름 설정
-    //   }
+    },
+      filename: function (req, file, cb) {
+        cb(null, file.originalname) // cb 콜백함수를 통해 전송된 파일 이름 설정
+    }
 })
 var upload = multer({ storage: storage })
 
@@ -149,6 +185,10 @@ router.get('/images/:image_name', function (request, response) {
 });
 
 router.get('/show_detail/:board_num', function (request, response) {
+    db.query(`UPDATE busking_info SET click_count = click_count+1 WHERE board_num = ?`,[ request.params.board_num], (err, result)=>{
+        if(err)
+            throw err;
+    });
     var login_form = ``;
     login_form = template.loginForm(request.session.is_logined, request.session.name);
     // console.log(Math.ceil(request.params.board_num / 10));
@@ -167,12 +207,15 @@ router.get('/youtube/:board_num', function (request, response) {
     var login_form = ``;
     login_form = template.loginForm(request.session.is_logined, request.session.name);
 
-    db.query(`SELECT * FROM busking_info WHERE board_num=?`, [request.params.board_num], function (error1, info) {
-        console.log(info);
-        var click_count = info[0].click_count + 1;
-        console.log(click_count);
-        db.query(`UPDATE busking_info SET click_count=? WHERE board_num=?`, [click_count, request.params.board_num], function (error2, result) {
-        })
+    // db.query(`SELECT * FROM busking_info WHERE board_num=?`, [request.params.board_num], function (error1, info) {
+    //     console.log(info);
+    //     var click_count = info[0].click_count + 1;
+    //     console.log(click_count);
+    //     db.query(`UPDATE busking_info SET click_count=? WHERE board_num=?`, [click_count, request.params.board_num], function (error2, result) {
+    //     })
+    // })
+    // 수정했음
+    db.query(`UPDATE busking_info SET click_count=click_count+1 WHERE board_num=?`, [request.params.board_num], (error2, result) => {
     })
 
     var cur = Math.ceil(request.params.board_num / 2);
