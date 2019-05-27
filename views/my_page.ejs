@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title></title>
     <meta charset="utf-8">
@@ -9,7 +8,7 @@
 </head>
 
 <body>
-    <% 
+    <%
         var youtube_list_num = 0;
         var live_video_num = 0;
         var my_page_info = my_page_info;
@@ -64,7 +63,7 @@
                     <input type="text" name="youtube_link">
                     <input type="submit" value="추가">
                 </form><br>
-                <% while(youtube_list_num < youtube_list.length){ 
+                <% while(youtube_list_num < youtube_list.length){
                     var url = youtube_list[youtube_list_num].youtube_link;
                     var split = url.split('/');
                     var youtube_link = split[3];
@@ -108,7 +107,7 @@
                         frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen>
                     </iframe>
-                    <% 
+                    <%
                         live_video_num++;
                     }
                     %>
@@ -131,12 +130,23 @@
                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
                 </iframe>
             </span>
-            <% 
+            <%
                 youtube_popularity_num++;
             }
             %>
         </div>
     </div>
-</body>
-
+      <p>
+        <div id="comment"></div>
+        <script>
+        (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = 'https://web1-2.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+      })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      </p>
+  </body>
 </html>
