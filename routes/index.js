@@ -48,7 +48,7 @@ router.get('/signUp', function (request, response) {
 
 router.post('/signUp_process', function (request, response) {
     var post = request.body;
-    
+
     db.query('INSERT INTO signUp VALUES (?, ?, ?, ?, ?, ?)',
         [post.id, post.password, post.name, post.birthday, post.sex, post.email], function (error, result) {
             if (error) {
@@ -60,7 +60,7 @@ router.post('/signUp_process', function (request, response) {
 });
 router.get('/search', (request, response)=>{
     console.log(request.query);
-    
+
     response.redirect(`/search/${request.query.searchId}`);
 })
 router.get('/search/:searchId', (request, response)=>{
@@ -72,7 +72,7 @@ router.get('/search/:searchId', (request, response)=>{
         list.sort((a, b)=>{ // 오름차순 정렬, 혹시나 있을지 모르는 중복의 제거를 위해
             return a - b;
         });
-         
+
         var view = 'searchView';
         var state = '';
         for(var i = 0; i < list.length; i++){
@@ -83,7 +83,7 @@ router.get('/search/:searchId', (request, response)=>{
             else
                 state += (' OR '+ list[i]);
         }
-        
+
         db.query(`DROP VIEW IF EXISTS ${view}`, (err2, tmp)=>{ // 검색할때마다 뷰 초기화
             db.query(`CREATE VIEW ${view} AS SELECT * FROM busking_info WHERE board_num=${state}`, (err3, tmp2)=>{ // create view for search
                 var login_form = ``;
@@ -96,7 +96,7 @@ router.get('/search/:searchId', (request, response)=>{
 });
 router.post('/login_process', function (request, response) {
     var post = request.body;
-    
+
     db.query(`SELECT * FROM signUp`, function (error, login) {
         var count = 0;
 
@@ -121,6 +121,7 @@ router.get('/logout', function (request, response) {
 });
 
 router.get('/my_info', function (request, response) {
+  
     db.query(`SELECT * FROM signUp WHERE name=?`, [request.session.name], function (err, info) {
         response.render('my_info', {
             id: `${info[0].id}`,
@@ -135,9 +136,12 @@ router.get('/my_info', function (request, response) {
 
 router.get('/write_live_create', function (request, response) {
     if (!request.session.is_logined) {
+        console.log("err 발생!");
         response.redirect('/');
     }
-    response.render('write_live_create.html');
+    else{ //else를 붙여주니 main page 그대로!
+    response.render('write_live_create.html'); //
+  }
 });
 
 //image upload 모듈및 방법들

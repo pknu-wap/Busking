@@ -12,7 +12,7 @@
         var youtube_list_num = 0;
         var live_video_num = 0;
         var my_page_info = my_page_info;
-        var youtube_popularity_num = 0
+        var youtube_popularity_num = 0;
     %>
     <div id="all">
         <!--전체-->
@@ -66,7 +66,7 @@
                 <% while(youtube_list_num < youtube_list.length){
                     var url = youtube_list[youtube_list_num].youtube_link;
                     var split = url.split('/');
-                    var youtube_link = split[3];
+                    var youtube_link = split[3]; //
                 %>
                 <div>
                     <iframe src="https://www.youtube.com/embed/<%=youtube_link%>" frameborder="0"
@@ -97,7 +97,7 @@
                 </div>
                 <div>
                     <h6>실시간 인기 유튜브 생방송</h6>
-                    <% while(live_video_num < live_video.length){
+                    <% while(live_video_num < live_video.length){ //여기서는 받은 것 같음.
                         var url = live_video[live_video_num].youtube_link
                         var split = url.split('/');
                         var youtube_link = split[3]; //유투브 실시간 방송 개인 링크번호
@@ -123,6 +123,7 @@
                 var split = url.split('/');
                 console.log(split);
                 var youtube_link = split[3]; //유투브 실시간 방송 개인 링크번호
+
             %>
             <span>
                 <%=youtube_popularity_num + 1 %>등
@@ -136,17 +137,24 @@
             %>
         </div>
     </div>
-      <p>
-        <div id="comment"></div>
-        <script>
-        (function() { // DON'T EDIT BELOW THIS LINE
-        var d = document, s = d.createElement('script');
-        s.src = 'https://web1-2.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-      })();
-  </script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-      </p>
+
+    <div id = under>
+    <form action ="/MyPage/written" method="POST">
+      <fieldset>
+        <legend>Comment</legend>
+          <textarea rows="2" cols="160" name="comment"></textarea>
+          <input type="submit" value ="작성">
+      </fieldset>
+      </form>
+
+      <fieldset>
+        <legend>Comment</legend><br>
+        <% for(var i =0; i<comment.length; i++){ %><br>
+        <% var cmtarr = comment[i]; %>
+        <%- cmtarr.id_cmt + "<br>" + cmtarr.cmt %>
+        <% } %>
+      </fieldset>
+    </div>
+
   </body>
 </html>

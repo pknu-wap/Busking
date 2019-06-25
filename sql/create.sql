@@ -25,7 +25,7 @@ CREATE TABLE `busking_info` (
     PRIMARY KEY (`board_num`)
 );
 
-CREATE TABLE `MyPageInfo` ( 
+CREATE TABLE `MyPageInfo` (
     `user_name` varchar(20) NOT NULL,
     `singer` varchar(20) NOT NULL,
     `genre` varchar(20) NOT NULL,
@@ -33,4 +33,8 @@ CREATE TABLE `MyPageInfo` (
     `location` varchar(40) NOT NULL,
     PRIMARY KEY (`user_name`)
 );
-
+CREATE TABLE `comment_info` (
+    `id_cmt` varchar(20) Not NULL,
+    `cmt` varchar(255) not null,
+    PRIMARY KEY (`id_cmt`)
+);
