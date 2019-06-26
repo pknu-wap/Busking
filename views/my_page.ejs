@@ -150,7 +150,7 @@
       <fieldset>
         <legend>Comment</legend><br>
         <% for(var i =0; i<comment.length; i++){ %><br>
-        <% var cmtarr = comment[i]; %>
+        <% var cmtarr = comment[comment.length-(i+1)];%>
         <%- cmtarr.id_cmt + "<br>" + cmtarr.cmt %>
         <% } %>
       </fieldset>

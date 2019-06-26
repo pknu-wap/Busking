@@ -34,7 +34,7 @@ CREATE TABLE `MyPageInfo` (
     PRIMARY KEY (`user_name`)
 );
 CREATE TABLE `comment_info` (
-    `id_cmt` varchar(20) Not NULL,
-    `cmt` varchar(255) not null,
+    `id_cmt` varchar(20) NOT NULL,
+    `cmt` varchar(255) CHARACTER SET uft8 DEFAULT null,
     PRIMARY KEY (`id_cmt`)
 );
