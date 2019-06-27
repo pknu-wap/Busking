@@ -1,21 +1,33 @@
 <!DOCTYPE html>
 
 <head>
+    <title>Create: busker</title>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="/create.css">
 </head>
 
 <body>
-    <form action="/MyPage/create_process" method="POST">
-        <input type="hidden" name="user_name" value='<%=user_name%>'>
-        가수 이름 : <input type="text" name="singer"><br>
-        소개글 : <textarea name="introduce" ></textarea><br>
-        장르 : <select name="genre" >
-                <option value="ballade">발라드</option>
-                <option value="hiphop">힙합 </option>
-                <option value="acoustic">어쿠스틱</option>
-            </select><br>
-        주요활동지역 : <input type="text" name="location">
-        <!-- 실시간 유투브 링크 : <input type="text" name="youtube_link"><br> -->
-        <input type="submit" value="등록">
-    </form>
+    <div class="outer">
+        <div class = "create">
+            <h1 class="title">Create Busker</h1>
+            <form action="/MyPage/create_process" method="POST">
+                <input type="hidden" name="user_name" value='<%=user_name%>'>
+                <h3 class="info">가수 이름</h3>
+                <input type="text" name="singer" class="input"><br>
+                <h3 class="info">소개글</h3>
+                <textarea name="introduce" class="input"></textarea><br>
+                <h3 class="info">장르</h3>
+                <select name="genre" class="input">
+                    <option value="ballade">발라드</option>
+                    <option value="hiphop">힙합 </option>
+                    <option value="acoustic">어쿠스틱</option>
+                </select>
+                <h3 class="info">주요 활동지역</h3>
+                <input type="text" name="location" class="input">
+                <h3 class="info">실시간 Youtube 링크</h3>
+                <input type="text" name="youtube_link"class="input">
+                <div><input type="submit" value="등록" class="submitbtn"></div>
+            </form>
+        </div>
+    </div>
 </body>
