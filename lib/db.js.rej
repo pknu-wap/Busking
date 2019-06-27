@@ -1,0 +1,15 @@
+diff a/lib/db.js b/lib/db.js	(rejected hunks)
+@@ -3,7 +3,8 @@
+     host : 'localhost',
+     user: 'root',
+     password: '1234',
+-    database: 'busking'
+-});
+-db.connect();
+-module.exports = db;
+\ No newline at end of file
++    database: 'busking',
++    port : 3305
++})
++db.connection();
++module.exports = db;

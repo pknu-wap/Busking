@@ -195,17 +195,10 @@ $RECYCLE.BIN/
 *.3dm
 *.max
 
-### Web ###
-*.asp
-*.cer
-*.csr
-*.css
-*.htm
-*.html
-*.js
-*.jsp
-*.php
-*.rss
-*.xhtml
+
+
+#session cookie img
+public/images/
+sessions/
 
 # End of https://www.gitignore.io/api/web,images
