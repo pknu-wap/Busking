@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <% 
+    <%
         var board_num = 0;
         var detail_board_num = detail_board_num;
         var my_board_view = my_board_view;
@@ -44,8 +44,8 @@
                 <div>
                     <%- login_form %>
                     <a href="/signUp">회원가입</a><br>
-                    <a href="">forgot ID</a><br>
-                    <a href="">forgot password</a>
+                    <a href="/_forgetId">forgot ID</a><br>
+                    <a href="/_forgetpasswd">forgot password</a>
                 </div>
                 <div>
                     <h6>인기 버스커 순위</h6>
@@ -82,12 +82,12 @@
                     <a href="">인기순</a>
                     <a href="">시간순</a>
                 </div>
-                <% 
+                <%
                     while(board_num < busking_info.length && busking_info.length != 0) {
                         var url = busking_info[board_num].youtube_link
                         var split = url.split('/');
                         var youtube_link = split[3]; //유투브 실시간 방송 개인 링크번호
-                        console.log(youtube_link); 
+                        console.log(youtube_link);
                 %>
                 <div class="buskinginfo">
                     <img id="board_img" src="/images/<%=busking_info[board_num].image%>">
@@ -114,9 +114,9 @@
                             onclick="location.href='/show_detail/<%=busking_info[board_num].board_num%>'">
                     </div>
                 </div>
-                <% 
+                <%
                         board_num++;
-                    } 
+                    }
                 %>
                 <br>
                 <br>
@@ -198,7 +198,7 @@
                         frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen>
                     </iframe>
-                    <% 
+                    <%
                         live_video_num++;
                     }
                     %>
@@ -219,7 +219,7 @@
                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
                 </iframe>
             </span>
-            <% 
+            <%
                 youtube_list_num++;
             }
             %>

@@ -114,15 +114,9 @@ router.post('/written', function(request, response){ // 경로 자체를 MyPage/
 router.post('/del_cmt', function(request, response){
   db.query('SELECT * FROM signUp WHERE name=?', [request.session.name], (err,data)=>{
       var id = data[0].id;
-      var pass;
-      if(request.body.iden !== id){
-        response.render('/my_page.ejs',{pass : false});
-      }
-      else{
       db.query('DELETE FROM comment_info WHERE id_cmt=?',[id],(err,del)=>{
         response.redirect('/MyPage/view');
       })
-    }
   })
 })
 router.post('/mod_cmt', function(request, response){

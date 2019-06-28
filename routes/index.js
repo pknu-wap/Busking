@@ -121,7 +121,7 @@ router.get('/logout', function (request, response) {
 });
 
 router.get('/my_info', function (request, response) {
-  
+
     db.query(`SELECT * FROM signUp WHERE name=?`, [request.session.name], function (err, info) {
         response.render('my_info', {
             id: `${info[0].id}`,
@@ -491,4 +491,43 @@ router.post('/find_live_process', function (request, response) {
     // }
 });
 
+router.get('/_forgetId', (req,res)=>{
+  res.render('forgetId.ejs');
+})
+router.get('/_forgetpasswd', (req,res)=>{
+  res.render('forgetPasswd.ejs')
+})
+router.post('/forgetId_process', (req,res)=>{
+  var info_email = req.body.email; var info_name=req.body.name;
+  db.query('SELECT * FROM signUp', (err,data)=>{
+      if(info_email == data[0].email){
+        if(info_name == data[0].name){
+          res.render('return_idInfo', {dataId : data[0].id})
+        }
+      }
+  })
+})
+router.post('/forgetPasswd_process', (req,res)=>{
+  var info_email = req.body.email; var info_name=req.body.name;
+  var info_id = req.body.id;
+  db.query('SELECT * FROM signUp', (err,data)=>{
+      if(info_email == data[0].email){
+          if(info_name == data[0].name){
+            if(info_id == data[0].id){
+              res.render('return_pwInfo');
+            }
+        }
+      }
+    })
+})
+router.post('/new_passwd', (req,res)=>{
+  var newpw = req.body.new, newpwCheck = req.body._new;
+  db.query('SELECT * FROM signUp', (err,data)=>{
+    if(newpw == newpwCheck){
+      db.query('UPDATE signUp set password=? WHERE id=? ', [newpw, data[0].id],(err,dataP)=>{
+        res.redirect('/');
+      })
+    }
+  })
+})
 module.exports = router;
