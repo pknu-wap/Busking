@@ -11,26 +11,52 @@
     <div class="out">
         <div class="signup">
             <h1 class="title">BUSKING</a></h1>
-            <form action="/signUp_process" method="POST">
+            <form action="/signUp_process" id="frm" method="POST">
                 <h3 class="jointitle">아이디</h3>
-                <input type="text" name="id" class="input" maxlength="20">
+                <input type="text" name="id" id="id" class="input" maxlength="20">
                 <h3 class="jointitle">비밀번호</h3>
-                <input type="password" name="password" class="input" maxlength="20">
+                <input type="password" name="password" id="password" class="input" maxlength="20">
                 <h3 class="jointitle">이름</h3>
-                <input type="text" name="name" class="input" maxlength="20">
+                <input type="text" name="name" class="input" id="name" maxlength="20">
                 <h3 class="jointitle">생년월일</h3>
-                <input type="date" name="birthday" class="input">
+                <input type="date" name="birthday" class="input" name="birthday">
                 <h3 class="jointitle">성별</h3>
-                <select name = sex>
+                <select name = sex id="sex">
                         <option value="">성별을 선택하시오</option>
                         <option value="male">남자</option><!--임시로 해놓은거임-->
                         <option value="female">여자</option>
                 </select>
                 <h3 class="jointitle">Email Address</h3>
-                <input type="email" name="email" class="input" maxlength="30">
-                <p><input type="submit" value="가입하기" class="joinbtn"></p>
+                <input type="email" name="email" id="email" class="input" maxlength="30">
+                <p><input type="button" value="가입하기" class="joinbtn"
+                    onclick="
+                    var id = document.querySelector('#id');
+                    var pw = document.querySelector('#password');
+                    var name = document.querySelector('#name');
+                    var birth = document.querySelector('#birthday');
+                    var sex = document.querySelector('#sex');
+                    var email = document.querySelector('#email');
+
+                    var sexSelect = false;
+                    for(var i = 0; i < sex.length; i++){
+                        if(sex[i].checked){
+                            sexSelect = true;
+                        }
+                    }
+
+                    if(id.value == ''){
+                        alert('ID를 입력하세요.')
+                        id.focus();
+                    }else if(pw.value == ''){
+                        alert('비밀번호를 입력하세요.');
+                        pw.focus();
+                    }else if(name.value == ''){
+                        alert(`이름을 입력하세요.${birth}`);
+                        name.focus();
+                    }else{
+                        document.getElementById('frm').submit();
+                    }"></p>
             </form>
-            <!-- <img src="/images/busking.jpg" width="300"> -->
         </div>
     </div>
 </body>
