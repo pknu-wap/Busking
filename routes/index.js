@@ -58,34 +58,34 @@ router.post('/signUp_process', function (request, response) {
             }
         });
 });
-router.get('/search', (request, response)=>{
+router.get('/search', (request, response) => {
     console.log(request.query);
 
     response.redirect(`/search/${request.query.searchId}`);
 })
-router.get('/search/:searchId', (request, response)=>{
+router.get('/search/:searchId', (request, response) => {
     var key = request.params.searchId;
     var list = [];
-    db.query(`SELECT board_num FROM busking_info WHERE singer LIKE '%${key}%' OR song LIKE '%${key}%'`, (err, value)=>{
-        for(var i = 0; i < value.length; i++)
+    db.query(`SELECT board_num FROM busking_info WHERE singer LIKE '%${key}%' OR song LIKE '%${key}%'`, (err, value) => {
+        for (var i = 0; i < value.length; i++)
             list.push(value[i].board_num);
-        list.sort((a, b)=>{ // 오름차순 정렬, 혹시나 있을지 모르는 중복의 제거를 위해
+        list.sort((a, b) => { // 오름차순 정렬, 혹시나 있을지 모르는 중복의 제거를 위해
             return a - b;
         });
 
         var view = 'searchView';
         var state = '';
-        for(var i = 0; i < list.length; i++){
-            if(i!=0 && list[i] === list[i-1])
+        for (var i = 0; i < list.length; i++) {
+            if (i != 0 && list[i] === list[i - 1])
                 continue;
-            if(i == 0)
+            if (i == 0)
                 state += list[i];
             else
-                state += (' OR '+ list[i]);
+                state += (' OR ' + list[i]);
         }
 
-        db.query(`DROP VIEW IF EXISTS ${view}`, (err2, tmp)=>{ // 검색할때마다 뷰 초기화
-            db.query(`CREATE VIEW ${view} AS SELECT * FROM busking_info WHERE board_num=${state}`, (err3, tmp2)=>{ // create view for search
+        db.query(`DROP VIEW IF EXISTS ${view}`, (err2, tmp) => { // 검색할때마다 뷰 초기화
+            db.query(`CREATE VIEW ${view} AS SELECT * FROM busking_info WHERE board_num=${state}`, (err3, tmp2) => { // create view for search
                 var login_form = ``;
                 login_form = template.loginForm(request.session.is_logined, request.session.name);
 
@@ -139,9 +139,9 @@ router.get('/write_live_create', function (request, response) {
         console.log("err 발생!");
         response.redirect('/');
     }
-    else{ //else를 붙여주니 main page 그대로!
-    response.render('write_live_create.html'); //
-  }
+    else { //else를 붙여주니 main page 그대로!
+        response.render('write_live_create.html'); //
+    }
 });
 
 //image upload 모듈및 방법들
@@ -150,7 +150,7 @@ var storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'public/images') // cb 콜백함수를 통해 전송된 파일 저장 디렉토리 설정
     },
-      filename: function (req, file, cb) {
+    filename: function (req, file, cb) {
         cb(null, file.originalname) // cb 콜백함수를 통해 전송된 파일 이름 설정
     }
 })
@@ -189,8 +189,8 @@ router.get('/images/:image_name', function (request, response) {
 });
 
 router.get('/show_detail/:board_num', function (request, response) {
-    db.query(`UPDATE busking_info SET click_count = click_count+1 WHERE board_num = ?`,[ request.params.board_num], (err, result)=>{
-        if(err)
+    db.query(`UPDATE busking_info SET click_count = click_count+1 WHERE board_num = ?`, [request.params.board_num], (err, result) => {
+        if (err)
             throw err;
     });
     var login_form = ``;
@@ -285,20 +285,23 @@ router.get('/my_write_live', function (request, response) {
             "startPage": startPage,
             "endPage": endPage
         };
-        db.query(`SELECT youtube_link FROM Youtube_list ORDER BY click_count DESC limit 0, 5`, function (error, youtube_list) {
-            db.query(`SELECT youtube_link FROM busking_info ORDER BY click_count DESC limit 0, 5`, function (error, live_video) {
-                db.query(`SELECT * FROM busking_info WHERE user_name=? ORDER BY board_num ASC limit ?,?`, [request.session.name, no, page_size],
-                    function (error, busking_info) {
-                        response.render('main', {
-                            login_form: `${login_form}`,
-                            busking_info: busking_info ? busking_info : {},
-                            pasing: result2,
-                            my_board_view: true,
-                            live_video: live_video,
-                            youtube_list: youtube_list
-                        });
-                    }
-                )
+        db.query(`SELECT singer,board_num FROM busking_info ORDER BY click_count DESC limit 0, 5`, function (err, ranking) {
+            db.query(`SELECT youtube_link FROM Youtube_list ORDER BY click_count DESC limit 0, 5`, function (error, youtube_list) {
+                db.query(`SELECT youtube_link FROM busking_info ORDER BY click_count DESC limit 0, 5`, function (error, live_video) {
+                    db.query(`SELECT * FROM busking_info WHERE user_name=? ORDER BY board_num ASC limit ?,?`, [request.session.name, no, page_size],
+                        function (error, busking_info) {
+                            response.render('main', {
+                                login_form: `${login_form}`,
+                                busking_info: busking_info ? busking_info : {},
+                                pasing: result2,
+                                my_board_view: true,
+                                live_video: live_video,
+                                youtube_list: youtube_list,
+                                ranking:ranking
+                            });
+                        }
+                    )
+                })
             })
         })
     })
@@ -409,52 +412,57 @@ router.post('/find_live_process', function (request, response) {
             "startPage": startPage,
             "endPage": endPage
         };
-        db.query(`SELECT youtube_link FROM Youtube_list ORDER BY click_count DESC limit 0, 5`, function (error, youtube_list) {
-            db.query(`SELECT youtube_link FROM busking_info ORDER BY click_count DESC limit 0, 5`, function (error, live_video) {
-                if (post.location === '장소' && post.genre === '장르') {
-                    response.redirect('/');
-                } else if (post.location === '장소' && post.genre !== '장르') {
-                    var login_form = ``;
-                    login_form = template.loginForm(request.session.is_logined, request.session.name);
+        db.query(`SELECT singer,board_num FROM busking_info ORDER BY click_count DESC limit 0, 5`, function (err, ranking) {
+            db.query(`SELECT youtube_link FROM Youtube_list ORDER BY click_count DESC limit 0, 5`, function (error, youtube_list) {
+                db.query(`SELECT youtube_link FROM busking_info ORDER BY click_count DESC limit 0, 5`, function (error, live_video) {
+                    if (post.location === '장소' && post.genre === '장르') {
+                        response.redirect('/');
+                    } else if (post.location === '장소' && post.genre !== '장르') {
+                        var login_form = ``;
+                        login_form = template.loginForm(request.session.is_logined, request.session.name);
 
-                    db.query('SELECT * FROM busking_info WHERE genre=? ORDER BY board_num ASC limit ?,?', [post.genre, no, page_size], function (error, busking_info) {
-                        response.render('main', {
-                            login_form: `${login_form}`,
-                            busking_info: busking_info ? busking_info : {},
-                            pasing: result2,
-                            live_video: live_video,
-                            youtube_list : youtube_list
-                        });
-                    })
-                } else if (post.location !== '장소' && post.genre === '장르') {
-                    var login_form = ``;
-                    login_form = template.loginForm(request.session.is_logined, request.session.name);
+                        db.query('SELECT * FROM busking_info WHERE genre=? ORDER BY board_num ASC limit ?,?', [post.genre, no, page_size], function (error, busking_info) {
+                            response.render('main', {
+                                login_form: `${login_form}`,
+                                busking_info: busking_info ? busking_info : {},
+                                pasing: result2,
+                                live_video: live_video,
+                                youtube_list: youtube_list,
+                                ranking: ranking
+                            });
+                        })
+                    } else if (post.location !== '장소' && post.genre === '장르') {
+                        var login_form = ``;
+                        login_form = template.loginForm(request.session.is_logined, request.session.name);
 
-                    db.query('SELECT * FROM busking_info WHERE location=? ORDER BY board_num ASC limit ?,?', [post.location, no, page_size], function (error, busking_info) {
-                        response.render('main', {
-                            login_form: `${login_form}`,
-                            busking_info: busking_info ? busking_info : {},
-                            pasing: result2,
-                            live_video: live_video,
-                            youtube_list : youtube_list
-                        });
-                    })
-                } else if (post.location !== '장소' && post.genre !== '장르') {
-                    var login_form = ``;
-                    login_form = template.loginForm(request.session.is_logined, request.session.name);
+                        db.query('SELECT * FROM busking_info WHERE location=? ORDER BY board_num ASC limit ?,?', [post.location, no, page_size], function (error, busking_info) {
+                            response.render('main', {
+                                login_form: `${login_form}`,
+                                busking_info: busking_info ? busking_info : {},
+                                pasing: result2,
+                                live_video: live_video,
+                                youtube_list: youtube_list,
+                                ranking: ranking
+                            });
+                        })
+                    } else if (post.location !== '장소' && post.genre !== '장르') {
+                        var login_form = ``;
+                        login_form = template.loginForm(request.session.is_logined, request.session.name);
 
-                    db.query('SELECT * FROM busking_info WHERE location=? AND genre=? ORDER BY board_num ASC limit ?,?', [post.location, post.genre, no, page_size], function (error, busking_info) {
-                        response.render('main', {
-                            login_form: `${login_form}`,
-                            busking_info: busking_info ? busking_info : {},
-                            pasing: result2,
-                            live_video: live_video,
-                            youtube_list : youtube_list
-                        });
-                    })
-                }
-            })
-        });
+                        db.query('SELECT * FROM busking_info WHERE location=? AND genre=? ORDER BY board_num ASC limit ?,?', [post.location, post.genre, no, page_size], function (error, busking_info) {
+                            response.render('main', {
+                                login_form: `${login_form}`,
+                                busking_info: busking_info ? busking_info : {},
+                                pasing: result2,
+                                live_video: live_video,
+                                youtube_list: youtube_list,
+                                ranking: ranking
+                            });
+                        })
+                    }
+                })
+            });
+        })
     })
     // if (post.location === '장소' && post.genre === '장르') {
     //     response.redirect('/');

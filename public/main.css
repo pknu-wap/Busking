@@ -3,8 +3,8 @@ body {
 }
 
 div {
-    border: 1px solid gray;
-}
+    border: 1px solid gainsboro;
+} 
 
 iframe {
     width: 200px;
@@ -73,7 +73,7 @@ ul {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #333333;
+    background-color: rgb(238, 238, 25);
 } 
   
   li {
@@ -84,6 +84,7 @@ ul {
   li a {
     display: block;
     color: black;
+    font-size: 15px;
     text-align: center;
     padding: 16px;
     text-decoration: none;
@@ -92,3 +93,28 @@ ul {
   /* li a:hover {
     background-color: #111111;
   } */
+
+  img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+  #searchinput{
+      border: 3px solid rgb(238, 238, 25);
+  }
+
+  #searchbutton{
+      background-color: rgb(238, 238, 25);
+  }
+
+  #loginbutton{
+    background-color: rgb(238, 238, 25);
+  }
+
+  .rankList{
+      float: none;
+  }
+
+  #board_img{
+    max-width: 100%;
+    max-height: 100%;
+  }
