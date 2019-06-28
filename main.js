@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 var session = require(`express-session`);
 var FileStore = require('session-file-store')(session);
 
-app.set('views', __dirname + '\\views');
+app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
 app.use(express.static('public'));

@@ -30,7 +30,7 @@
         <!--전체-->
         <div id="top">
             <!--top-->
-            <img src="">
+            <img src="/images/Icon.png">
             <form action="/search" method="GET" id="search">
                 <!--수평-->
                 <input type="text" name="searchId" id="searchinput">
@@ -52,7 +52,7 @@
                     <ol>
                         <%var i = 0;
                         for(; i < ranking.length && i < 5; i++){%>
-                        <li><a href="/show_detail/<%=ranking[i].board_num%>"><%=ranking[i].singer%></a></li>
+                        <li class="rankList"><a href="/show_detail/<%=ranking[i].board_num%>"><%=ranking[i].singer%></a></li>
                         <%}%>
                     </ol>
                 </div>
@@ -77,10 +77,6 @@
                     </form>
                     <input type="button" value="글쓰기" onclick="location.href='/write_live_create'">
                     <input type="button" value="내 글보기" onclick="location.href='/my_write_live'">
-                </div>
-                <div>
-                    <a href="">인기순</a>
-                    <a href="">시간순</a>
                 </div>
                 <% 
                     while(board_num < busking_info.length && busking_info.length != 0) {
@@ -214,7 +210,7 @@
                 var youtube_link = split[3]; //유투브 실시간 방송 개인 링크번호
             %>
             <span>
-                <%=youtube_list_num + 1 %>등
+                <h7><%=youtube_list_num + 1 %>등</h7>
                 <iframe width="150" height="100" src="https://www.youtube.com/embed/<%=youtube_link %>" frameborder="0"
                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
                 </iframe>
