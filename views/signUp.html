@@ -2,48 +2,37 @@
 <html>
 
 <head>
-    <title></title>
+    <title>회원가입</title>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="/signup.css">
 </head>
 
 <body>
-    <form action="/signUp_process" method="POST">
-        <table>
-            <tr>
-                <td>아이디</td>
-                <td><input type="text" name="id"></td>
-            </tr>
-            <tr>
-                <td>비밀번호</td>
-                <td><input type="password" name="password"></td>
-            </tr>
-            <tr>
-                <td>이름</td>
-                <td><input type="text" name="name"></td>
-            </tr>
-            <tr>
-                <td>생년월일</td>
-                <td><input type="date" name="birthday"></td>
-            </tr>
-            <tr>
-                <td>성별</td>
-                <td>
-                    <select name = sex>
+    <div class="out">
+        <div class="signup">
+            <h1 class="title">BUSKING</a></h1>
+            <form action="/signUp_process" method="POST">
+                <h3 class="jointitle">아이디</h3>
+                <input type="text" name="id" class="input" maxlength="20">
+                <h3 class="jointitle">비밀번호</h3>
+                <input type="password" name="password" class="input" maxlength="20">
+                <h3 class="jointitle">이름</h3>
+                <input type="text" name="name" class="input" maxlength="20">
+                <h3 class="jointitle">생년월일</h3>
+                <input type="date" name="birthday" class="input">
+                <h3 class="jointitle">성별</h3>
+                <select name = sex>
                         <option value="">성별을 선택하시오</option>
                         <option value="male">남자</option><!--임시로 해놓은거임-->
                         <option value="female">여자</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>Email</td>
-                <td><input type="text" name="email"></td>
-            </tr>
-            <tr>
-                <td colspan="2"><input type="submit" value="가입"></td>
-            </tr>
-        </table>
-    </form>
+                </select>
+                <h3 class="jointitle">Email Address</h3>
+                <input type="date" name="email" class="input" maxlength="30">
+                <p><input type="submit" value="가입하기" class="joinbtn"></p>
+            </form>
+            <!-- <img src="/images/busking.jpg" width="300"> -->
+        </div>
+    </div>
 </body>
 
 </html>

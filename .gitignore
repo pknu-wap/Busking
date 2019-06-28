@@ -130,15 +130,6 @@ $RECYCLE.BIN/
 # Created by https://www.gitignore.io/api/web,images
 # Edit at https://www.gitignore.io/?templates=web,images
 
-### Images ###
-# JPEG
-*.jpg
-*.jpeg
-*.jpe
-*.jif
-*.jfif
-*.jfi
-
 # JPEG 2000
 *.jp2
 *.j2k
@@ -195,17 +186,10 @@ $RECYCLE.BIN/
 *.3dm
 *.max
 
-### Web ###
-*.asp
-*.cer
-*.csr
-*.css
-*.htm
-*.html
-*.js
-*.jsp
-*.php
-*.rss
-*.xhtml
+
+
+#session cookie
+sessions/
 
 # End of https://www.gitignore.io/api/web,images
+# End of https://www.gitignore.io/api/node,windows,visualstudiocode
