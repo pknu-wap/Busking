@@ -139,22 +139,62 @@
     </div>
 
     <div id = under>
-    <form action ="/MyPage/written" method="POST">
-      <fieldset>
-        <legend>Comment</legend>
-          <textarea rows="2" cols="160" name="comment"></textarea>
-          <input type="submit" value ="작성">
-      </fieldset>
+    <link rel="stylesheet" href="/comment.css">
+      <form action ="/MyPage/written" method="POST" class="cmt_">
+        <fieldset>
+          <legend>Comment</legend>
+            <textarea rows="2" cols="160" name="comment" ></textarea>
+            <input type="submit" value ="작성">
+          </fieldset>
       </form>
 
-      <fieldset>
-        <legend>Comment</legend><br>
-        <% for(var i =0; i<comment.length; i++){ %><br>
-        <% var cmtarr = comment[comment.length-(i+1)];%>
-        <%- cmtarr.id_cmt + "<br>" + cmtarr.cmt %>
-        <% } %>
-      </fieldset>
-    </div>
+    <div class="wrap">
+      <fieldset id="field">
 
+            <legend>Comment</legend><br>
+            <% for(var i =0; i<comment.length; i++){ %><br>
+                <% var cmtarr = comment[comment.length-(i+1)];%>
+                <div class="com">
+                  <h2><%- cmtarr.id_cmt %></h2><br>
+                  <%- cmtarr.cmt %><br>
+                  <input type="button" value="수정" class="mod" id="last" onclick="modText()">
+                  <form action="/MyPage/del_cmt" method="POST" class="mod">
+                    <input type="submit" value = "삭제" name="iden">
+                  </div>
+
+              <script>
+                  function modText(){
+                    var body = document.body;
+                    var fieldset = document.getElementById('field');
+                    var text = document.createElement('textarea');
+                    text.setAttribute("rows", "4");
+                    text.setAttribute("cols", "80");
+                    text.setAttribute("name", "_mod");
+
+                    var form = document.createElement('form');
+                    form.setAttribute("method", "POST");  //Post 방식
+                    form.setAttribute("action", "/MyPage/mod_cmt"); //요청 보낼 주소
+
+                    var result = document.createElement("input"); //<input type="submit" name="_mod">
+                    result.setAttribute("type","submit");
+                    result.setAttribute("value","작성");
+
+                    form.appendChild(text); form.appendChild(result);
+
+                    fieldset.appendChild(form);
+
+
+                  }
+                </script>
+
+                <% var pass = JSON.stringify({pass}) %>
+                <% console.log(pass);%>
+                <% if(!pass){ alert("Cannot access!");} %>
+
+            <%}%>
+          </form>
+        </fieldset>
+      </div>
+    </div>
   </body>
 </html>
